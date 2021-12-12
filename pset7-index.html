@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>PSET7 D3 Visualization Webpage</title>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.1.1/d3.min.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,500" rel="stylesheet">
+
+		<style type="text/css">
+		h1{
+			font-family: monospace;
+			color: salmon;
+		}
+		.row{
+			margin: 30px;
+		}
+		#viz{
+			border: 2px solid blue;
+			border-radius: 10px;
+			background-color: lightblue;
+		}
+		</style>
+	</head>
+
+		<body>
+        <main>
+						<section class= 'container'>
+							<div class='row'>
+								<h1>Visualizing Agricultural Land</h1>
+							</div>
+
+							<div class= 'row'>
+								<div class='col-5'>
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+										do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+										Ornare suspendisse sed nisi lacus sed viverra tellus. Consequat
+										id porta nibh venenatis cras sed felis eget. Volutpat lacus laoreet
+										 non curabitur gravida arcu ac tortor dignissim. Donec massa sapien
+										  faucibus et molestie ac. Pretium aenean pharetra magna ac placerat
+											vestibulum lectus. Scelerisque fermentum dui faucibus in ornare.
+											Porttitor lacus luctus accumsan tortor posuere ac ut consequat
+											semper. Arcu cursus euismod quis viverra nibh cras pulvinar
+											mattis nunc. Diam ut venenatis tellus in metus vulputate.
+											Est ultricies integer quis auctor elit sed vulputate mi.
+											Aliquam vestibulum morbi blandit cursus risus. Porttitor massa
+											 id neque aliquam vestibulum. Netus et malesuada fames ac turpis
+											 egestas integer eget aliquet. Dignissim diam quis enim lobortis
+											  scelerisque fermentum dui faucibus in. Pulvinar elementum integer
+												enim neque volutpat ac tincidunt vitae semper. Tellus pellentesque
+												eu tincidunt tortor aliquam. Est ante in nibh mauris cursus mattis
+												molestie a iaculis.</p>
+										<br>
+										<h4><b>Big Data, Visualization, and Society</b></h4>
+										<p><b>Course:</b> 11.154/11.454</p>
+										<p><b>Assignment:</b> Pset 7</p>
+										<p><b>Author:</b> Meera Gregerson</p>
+
+								</div>
+								<div class='col-7'>
+									<div id="viz"></div>
+									<p>Source: World Bank </p>
+								</div>
+							</div>
+						</section>
+
+
+        </main>
+		<script type="text/javascript">
+            const agriculturedata = [
+                ["Brazil", 33.9],
+                ["Canada", 6.9],
+                ["Costa Rica", 34.5],
+                ["Denmark", 62],
+                ["Fiji", 23.3],
+                ["France", 52.4],
+                ["Greenland", .6],
+                ["Italy", 43.2],
+                ["Mali",33.8],
+                ["Netherlands",53.3]
+            ];
+
+			const width = 1200;
+			const height = 450;
+            const marginLeft = 100;
+            const marginTop = 50;
+            const barHeight = 30;
+            const widthMultiplier = 3;
+            const gap = 5;
+
+            // define svg
+			const svg = d3.select("#viz")
+                .append("svg")
+								.attr('width', width)
+								.attr('height', height);
+								//.attr('viewBox', [0, 0, width, height]);
+								//for some reason the viewBox scales the svg smaller by a factor of about 4.2
+
+            // add rectangle bars
+            svg.append("g")
+                .attr("class", "rect-bars")
+            		.selectAll("rect")
+                .data(agriculturedata)
+                .enter()
+                .append("rect")
+                    .attr("y", (d, i) => i * (barHeight + gap) + marginTop )
+                    .attr("x", marginLeft)
+                    .attr("width", d => d[1] * widthMultiplier)
+                    .attr("height", barHeight)
+                    .attr("fill", "green")
+										.attr('opacity', 0.7);
+
+						svg.append('g')
+							.attr('class', 'text-styling')
+							.selectAll('text')
+							.data(agriculturedata)
+							.enter()
+							.append('text')
+								.attr('y', (d, i) => i * (barHeight + gap) + marginTop + (barHeight/2))
+								.attr('x', marginLeft - 5)
+								.attr('text-anchor', 'end')
+								.text(function(d){
+									return d[0]
+								})
+								.attr('font-family', 'Open Sans')
+								.attr('font-weight', 300)
+								.attr('font-size', 14);
+
+						svg.append('g')
+							.attr('class', 'label-styling')
+							.selectAll('text')
+							.data(agriculturedata)
+							.enter()
+							.append('text')
+								.attr('y', (d, i) => i * (barHeight + gap) + marginTop + (barHeight/2))
+								.attr('x', d => marginLeft + d[1] * widthMultiplier + 5)
+								.attr('text-anchor', 'start')
+								.text(function(d){
+									return d[1] + '%'
+								})
+								.attr('font-family', 'Open Sans')
+								.attr('font-weight', 300)
+								.attr('font-size', 14);
+
+						svg.append('text')
+							.attr('class', 'title-styling')
+							.attr('y', 30)
+							.attr('x', marginLeft)
+							.text('Proportion of Agricultural Land in 2016')
+							.attr('font-family', 'Open Sans')
+							.attr('font-weight', 500)
+							.attr('font-size', 18);
+
+		</script>
+	</body>
+</html>
